@@ -1,6 +1,6 @@
 ## DeepL App for Slack
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/seratch/deepl-for-slack/tree/master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/jjjjpppp/deepl-for-slack/tree/master)
 
 ## Features
 
