@@ -1,11 +1,12 @@
 import { default as axios, AxiosInstance } from "axios";
 import qs from "qs";
 import { Logger } from "@slack/logger";
+import { TranslatorInterface } from './translator_interface';
 
-export class DeepLApi {
-  private authKey: string;
+export class DeepLApi implements TranslatorInterface{
+  authKey: string;
+  logger: Logger;
   private axiosInstance: AxiosInstance;
-  private logger: Logger;
   constructor(authKey: string, logger: Logger) {
     this.authKey = authKey;
     this.logger = logger;

@@ -6,19 +6,15 @@ import { ConsoleLogger, LogLevel } from '@slack/logger';
 import * as middleware from './custom-middleware';
 
 import { DeepLApi } from './deepl';
+import { GoogleApi } from './google';
 import * as runner from './runnner';
 import * as reacjilator from './reacjilator';
 
 
+const translationService = 'Google'
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
 logger.setLevel(logLevel);
-
-const deepLAuthKey = process.env.DEEPL_AUTH_KEY;
-if (!deepLAuthKey) {
-  throw "DEEPL_AUTH_KEY is missing!";
-}
-const deepL = new DeepLApi(deepLAuthKey, logger);
 
 const app = new App({
   logger,
@@ -26,6 +22,22 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 middleware.enableAll(app);
+
+// -----------------------------
+// generate translation service
+// -----------------------------
+const generateTranslationService = () => {
+  if ('Google' === translationService) {
+    return new GoogleApi("", logger)
+  }
+
+  const deepLAuthKey = process.env.DEEPL_AUTH_KEY;
+  if (!deepLAuthKey) {
+     throw "DEEPL_AUTH_KEY is missing!";
+  }
+  return new DeepLApi(deepLAuthKey, logger);
+}
+const translator = generateTranslationService();
 
 // -----------------------------
 // shortcut
@@ -45,7 +57,7 @@ app.view("run-translation", async ({ ack, client, body }) => {
     view: runner.buildLoadingView(lang, text)
   });
 
-  const translatedText: string | null = await deepL.translate(text, lang);
+  const translatedText: string | null = await translator.translate(text, lang);
 
   await client.views.update({
     view_id: body.view.id,
@@ -85,7 +97,7 @@ app.event("reaction_added", async ({ body, client }) => {
   if (replies.messages && replies.messages.length > 0) {
     const message = replies.messages[0];
     if (message.text) {
-      const translatedText = await deepL.translate(message.text, lang);
+      const translatedText = await translator.translate(message.text, lang);
       if (translatedText == null) {
         return;
       }
