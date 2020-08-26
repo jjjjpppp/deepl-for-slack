@@ -11,7 +11,8 @@ import * as runner from './runnner';
 import * as reacjilator from './reacjilator';
 
 
-const translationService = 'Google'
+// const translationService = 'Google'
+let translationService = 'deepl'
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
 logger.setLevel(logLevel);
