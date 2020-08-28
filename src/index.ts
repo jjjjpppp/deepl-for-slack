@@ -7,12 +7,13 @@ import * as middleware from './custom-middleware';
 
 import { DeepLApi } from './deepl';
 import { GoogleApi } from './google';
+import { AwsApi } from './aws';
 import * as runner from './runnner';
 import * as reacjilator from './reacjilator';
 
 
 // const translationService = 'Google'
-let translationService = 'deepl'
+let translationService = 'Aws'
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
 logger.setLevel(logLevel);
@@ -30,6 +31,8 @@ middleware.enableAll(app);
 const generateTranslationService = () => {
   if ('Google' === translationService) {
     return new GoogleApi("", logger)
+  } else if ('Aws' === translationService) {
+    return new AwsApi("", logger)
   }
 
   const deepLAuthKey = process.env.DEEPL_AUTH_KEY;

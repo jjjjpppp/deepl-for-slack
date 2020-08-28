@@ -14,10 +14,13 @@
   "dependencies": {
     "@google-cloud/translate": "^6.0.0",
     "@slack/bolt": "^2.1.1",
-    "@types/node": "^14.0.13",
+    "aws-sdk": "^2.741.0",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "^14.6.1"
   }
 }
