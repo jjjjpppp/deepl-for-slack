@@ -10,10 +10,10 @@ import { GoogleApi } from './google';
 import { AwsApi } from './aws';
 import * as runner from './runnner';
 import * as reacjilator from './reacjilator';
+import { TranslatorInterface } from './translator_interface';
 
 
-// const translationService = 'Google'
-let translationService = 'Aws'
+let translator: TranslatorInterface;
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
 logger.setLevel(logLevel);
@@ -28,10 +28,10 @@ middleware.enableAll(app);
 // -----------------------------
 // generate translation service
 // -----------------------------
-const generateTranslationService = () => {
-  if ('Google' === translationService) {
+const generateTranslationService = (service_name: string) => {
+  if ('google' === service_name) {
     return new GoogleApi("", logger)
-  } else if ('Aws' === translationService) {
+  } else if ('aws' === service_name) {
     return new AwsApi("", logger)
   }
 
@@ -41,7 +41,7 @@ const generateTranslationService = () => {
   }
   return new DeepLApi(deepLAuthKey, logger);
 }
-const translator = generateTranslationService();
+translator = generateTranslationService("deepl");
 
 // -----------------------------
 // shortcut
@@ -112,6 +112,29 @@ app.event("reaction_added", async ({ body, client }) => {
     }
   }
 });
+
+// -----------------------------
+// change treanslation service
+// -----------------------------
+app.message('translator aws', async ({message, say}) => {
+translator = generateTranslationService("aws");
+  await say("Changed, This service is working on AWS translation API.");
+});
+
+app.message('translator google', async ({message, say}) => {
+translator = generateTranslationService("google");
+  await say("Changed, This service is working on Google translation API.");
+});
+
+app.message('translator deepl', async ({message, say}) => {
+translator = generateTranslationService("deepl");
+  await say("Changed, This service is working on DeepL translation API.");
+});
+
+app.message('translator help', async ({message, say}) => {
+  await say("Change translation back-end command `translator [deepl, aws, google]`");
+});
+
 
 // -----------------------------
 // starting the app
