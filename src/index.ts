@@ -30,7 +30,18 @@ middleware.enableAll(app);
 // -----------------------------
 const generateTranslationService = (service_name: string) => {
   if ('google' === service_name) {
-    return new GoogleApi("", "", logger)
+    const googleClientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+    if (!googleClientEmail) {
+     throw "GOOGLE_CLIENT_EMAIL is missing!";
+    }
+    const googlePrivateKey = process.env.GOOGLE_PRIVATE_KEY;
+    if (!googlePrivateKey) {
+     throw "GOOGLE_PRIVATE_KEY is missing!";
+    }
+    const key = googlePrivateKey.replace(/\\n/g,"\n")
+
+    return new GoogleApi(googleClientEmail, key, logger)
+
   } else if ('aws' === service_name) {
     const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
     if (!awsAccessKeyId) {

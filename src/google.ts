@@ -8,17 +8,30 @@ export class GoogleApi implements TranslatorInterface{
   authKey: string;
   authSecret: string;
   logger: Logger;
+  projectId: string;
   private translationServiceClient: TranslationServiceClient;
   constructor(authKey: string, authSecret: string, logger: Logger) {
     this.authKey = authKey;
     this.authSecret = authSecret;
     this.logger = logger;
-    this.translationServiceClient = new TranslationServiceClient();
+    if (!process.env.GCLOUD_PROJECT) {
+     throw "GCLOUD_PROJECT is missing!";
+    }
+    this.projectId = process.env.GCLOUD_PROJECT
+    this.translationServiceClient = new TranslationServiceClient(
+      {
+        projectId: this.projectId,
+        credentials: {
+          client_email: this.authKey,
+          private_key: this.authSecret,
+        },
+      }
+      );
   }
 
   async translate(text: string, targetLanguage: string): Promise<string | null> {
     const request = {
-      parent: this.translationServiceClient.locationPath("translation-281803", "global"),
+      parent: this.translationServiceClient.locationPath(this.projectId, "global"),
       contents: [text],
       mimeType: "text/plain",
       sourceLanguageCode: targetLanguage == "en" ? "ja" : "en",
