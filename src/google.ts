@@ -6,10 +6,12 @@ import { TranslationServiceClient } from "@google-cloud/translate/build/src/v3be
 
 export class GoogleApi implements TranslatorInterface{
   authKey: string;
+  authSecret: string;
   logger: Logger;
   private translationServiceClient: TranslationServiceClient;
-  constructor(authKey: string, logger: Logger) {
+  constructor(authKey: string, authSecret: string, logger: Logger) {
     this.authKey = authKey;
+    this.authSecret = authSecret;
     this.logger = logger;
     this.translationServiceClient = new TranslationServiceClient();
   }

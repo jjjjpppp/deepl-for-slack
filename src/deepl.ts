@@ -5,10 +5,12 @@ import { TranslatorInterface } from './translator_interface';
 
 export class DeepLApi implements TranslatorInterface{
   authKey: string;
+  authSecret: string;
   logger: Logger;
   private axiosInstance: AxiosInstance;
-  constructor(authKey: string, logger: Logger) {
+  constructor(authKey: string, authSecret: string, logger: Logger) {
     this.authKey = authKey;
+    this.authSecret = authSecret;
     this.logger = logger;
     this.axiosInstance = axios.create({
       baseURL: 'https://api.deepl.com/v2',

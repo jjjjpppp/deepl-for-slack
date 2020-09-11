@@ -8,10 +8,12 @@ const { promisify } = require('util');
 
 export class AwsApi implements TranslatorInterface{
   authKey: string;
+  authSecret: string;
   logger: Logger;
   private translationServiceClient: AWS.Translate;
-  constructor(authKey: string, logger: Logger) {
+  constructor(authKey: string, authSecret: string, logger: Logger) {
     this.authKey = authKey;
+    this.authSecret = authKey;
     this.logger = logger;
     this.translationServiceClient = new AWS.Translate({region: 'ap-northeast-1'});
   }

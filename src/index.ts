@@ -30,16 +30,24 @@ middleware.enableAll(app);
 // -----------------------------
 const generateTranslationService = (service_name: string) => {
   if ('google' === service_name) {
-    return new GoogleApi("", logger)
+    return new GoogleApi("", "", logger)
   } else if ('aws' === service_name) {
-    return new AwsApi("", logger)
+    const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+    if (!awsAccessKeyId) {
+     throw "AWS_ACCESS_KEY_ID is missing!";
+    }
+    const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+    if (!awsSecretAccessKey) {
+     throw "AWS_SECRET_ACCESS_KEY is missing!";
+    }
+    return new AwsApi(awsAccessKeyId, awsSecretAccessKey, logger)
   }
 
   const deepLAuthKey = process.env.DEEPL_AUTH_KEY;
   if (!deepLAuthKey) {
      throw "DEEPL_AUTH_KEY is missing!";
   }
-  return new DeepLApi(deepLAuthKey, logger);
+  return new DeepLApi(deepLAuthKey, "", logger);
 }
 translator = generateTranslationService("deepl");
 
