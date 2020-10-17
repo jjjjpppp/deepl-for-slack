@@ -30,6 +30,18 @@
        "description": "AWS_ACCESS_KEY_ID",
        "value": "***"
     },
+    "GOOGLE_CLIENT_EMAIL": {
+       "description": "GOOGLE CLIENT_EMAIL",
+       "value": "***"
+    },
+    "GOOGLE_PRIVATE_KEY": {
+       "description": "GOOGLE PRIVATE KEY you can check in the service acount json",
+       "value": "***"
+    },
+    "GCLOUD_PROJECT": {
+       "description": "GCLOUD PROJECT ID",
+       "value": "***"
+    },
     "DEEPL_RUNNER_LANGUAGES": {
       "description": "Enabled target languages in modals (https://www.deepl.com/docs-api/translating-text/request/)",
       "value": "en,ja,zh,de,fr,it,es,nl,pl,pt,ru"

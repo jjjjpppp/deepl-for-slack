@@ -34,7 +34,7 @@ export class GoogleApi implements TranslatorInterface{
       parent: this.translationServiceClient.locationPath(this.projectId, "global"),
       contents: [text],
       mimeType: "text/plain",
-      sourceLanguageCode: targetLanguage == "en" ? "ja" : "en",
+      sourceLanguageCode: null,
       targetLanguageCode: targetLanguage,
     }
     return this.translationServiceClient.translateText(
